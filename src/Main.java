@@ -1,30 +1,54 @@
-import java.util.Timer;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+
 public class Main {
-
-    static boolean isPrime(int n){
-        for(int i = 2; i < Math.sqrt(n); i++){
-            if(n % i == 0)
-                return false;
+    private static int totalCount = 0;
+    public static void main(String[] args) throws InterruptedException {
+        int[][] array = {
+                {2, 12500001},
+                {12500002, 25000000},
+                {25000001 ,37499999},
+                {37500000, 49999999},
+                {50000000, 62499999},
+                {62500000, 74999999},
+                {75000000, 87499999},
+                {87500000, 100000000}
+        };
+        int numThreads = 8;
+        long startTime = System.nanoTime();
+        Thread[] threads = new Thread[8];
+        for(int i = 0; i < numThreads; i++){
+            MyRunnable myRunnable = new MyRunnable(array[i][0], array[i][1]);
+            threads[i] = new Thread(myRunnable);
+            threads[i].start();
         }
 
-        return true;
-    }
-    public static void main(String[] args) {
-        long startTime = System.nanoTime();
-        int counter = 0;
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        for(int i = 2; i < 100000000; i++){
-            if(isPrime(i))
-                counter++;
+        for(int i = 0; i < numThreads; i++){
+            threads[i].join();
         }
         long endTime = System.nanoTime();
-        long elapsedTime =(endTime - startTime) / 1000000000;
-        System.out.println("There are "+ counter + " prime numbers");
-        System.out.println("Function took "+ elapsedTime + " seconds");
+        //System.out.println(counter);
+        long elapsedTime = endTime - startTime;
+        double elapsedSeconds = (double) elapsedTime / 1_000_000_000.0;
+        System.out.println("Elapsed Time: " + elapsedSeconds + " seconds");
+        System.out.println(totalCount);
+    }
 
+    public static void updateCount(int count){
+        totalCount += count;
+    }
+}
+
+class MyRunnable implements Runnable {
+    private int start;
+    private int end;
+    public MyRunnable(int start, int end){
+        this.start = start;
+        this.end = end;
+    }
+
+    public void run() {
+
+        int count = Primes.primeLoop(start, end);
+        Main.updateCount(count);
     }
 }
