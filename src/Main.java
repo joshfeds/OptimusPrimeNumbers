@@ -1,3 +1,5 @@
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.Arrays;
 
 public class Main {
@@ -8,7 +10,7 @@ public class Main {
     public Main(){
         arrayPrimes = new int[10];
     }
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, FileNotFoundException {
 
         int numThreads = 8;
         long startTime = System.nanoTime();
@@ -37,11 +39,14 @@ public class Main {
         long endTime = System.nanoTime();
         long elapsedTime = endTime - startTime;
         double elapsedSeconds = (double) elapsedTime / 1_000_000_000.0;
-        System.out.println("Elapsed Time: " + elapsedSeconds + " seconds");
-        System.out.println(totalCount);
-        System.out.println(sumPrimes);
         Arrays.sort(arrayPrimes);
-        System.out.println(Arrays.toString(arrayPrimes));
+
+        PrintWriter writer = new PrintWriter("primes.txt");
+        writer.println("Elapsed Time: " + elapsedSeconds + " seconds");
+        writer.println(totalCount);
+        writer.println(sumPrimes);
+        writer.println(Arrays.toString(arrayPrimes));
+        writer.close();
     }
 
     public static void updateCount(long[] sol){
