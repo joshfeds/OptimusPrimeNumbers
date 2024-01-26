@@ -38,7 +38,7 @@ public class Main {
         }
         long endTime = System.nanoTime();
         long elapsedTime = endTime - startTime;
-        double elapsedSeconds = (double) elapsedTime / 1_000_000_000.0;
+        double elapsedSeconds = (double) elapsedTime / 1000000000.0;
         Arrays.sort(arrayPrimes);
 
         PrintWriter writer = new PrintWriter("primes.txt");

@@ -1,6 +1,6 @@
 public class MyRunnable implements Runnable {
-    private int start;
-    private int end;
+    private final int start;
+    private final int end;
     public MyRunnable(int start, int end){
         this.start = start;
         this.end = end;
